@@ -1,0 +1,50 @@
+# Copyright (c) Huawei Technologies Co., Ltd. 2019-2019. All rights reserved.
+
+import("//build/zidane.gni")
+
+config("zlib_config") {
+  include_dirs = [ "." ]
+  cflags = [
+    "-Wno-incompatible-pointer-types",
+    "-Werror",
+    "-Wimplicit-function-declaration",
+  ]
+}
+
+static_library("libz") {
+  sources = [
+    "adler32.c",
+    "compress.c",
+    "crc32.c",
+    "crc32.h",
+    "deflate.c",
+    "deflate.h",
+    "gzclose.c",
+    "gzguts.h",
+    "gzlib.c",
+    "gzread.c",
+    "gzwrite.c",
+    "infback.c",
+    "inffast.c",
+    "inffast.h",
+    "inffixed.h",
+    "inflate.h",
+    "inflate.c",
+    "inftrees.c",
+    "inftrees.h",
+    "trees.c",
+    "trees.h",
+    "uncompr.c",
+    "zconf.h",
+    "zlib.h",
+    "zutil.c",
+    "zutil.h",
+    "contrib/minizip/ioapi.c",
+    "contrib/minizip/unzip.c",
+  ]
+  public_configs = [ ":zlib_config" ]
+}
+
+static_library("libz_test") {
+  deps = [":libz"]
+}
