@@ -1,6 +1,6 @@
 # Copyright (c) Huawei Technologies Co., Ltd. 2019-2019. All rights reserved.
 
-import("//build/zidane.gni")
+import("//build/harmonyos.gni")
 
 config("zlib_config") {
   include_dirs = [ "." ]
