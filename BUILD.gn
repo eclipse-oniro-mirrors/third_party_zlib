@@ -1,6 +1,7 @@
 # Copyright (c) Huawei Technologies Co., Ltd. 2019-2019. All rights reserved.
 
 import("//build/harmonyos.gni")
+import("//build/harmonyos/ndk/ndk.gni")
 
 config("zlib_config") {
   include_dirs = [ "." ]
@@ -47,4 +48,13 @@ static_library("libz") {
 
 static_library("libz_test") {
   deps = [":libz"]
+}
+
+harmonyos_ndk_headers("zlib_header") {
+  sources = ["./zlib.h","./zconf.h"]
+}
+
+harmonyos_ndk_library("libz_ndk") {
+  output_name = "z"
+  ndk_description_file = "./zlib.ndk.json"
 }
