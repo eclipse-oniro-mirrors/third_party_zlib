@@ -52,6 +52,7 @@ static_library("libz_test") {
 
 harmonyos_ndk_headers("zlib_header") {
   sources = ["./zlib.h","./zconf.h"]
+  notices = ["LICENSE"]
 }
 
 harmonyos_ndk_library("libz_ndk") {
