@@ -1,19 +1,27 @@
-# Copyright (c) Huawei Technologies Co., Ltd. 2019-2019. All rights reserved.
+#
+# Copyright (c) 2020 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
 
-import("//build/ohos.gni")
-import("//build/ohos/ndk/ndk.gni")
+import("//build/lite/config/component/lite_component.gni")
 
 config("zlib_config") {
-  include_dirs = [ "." ]
-  cflags = [
-    "-Wno-incompatible-pointer-types",
-    "-Werror",
-    "-Wimplicit-function-declaration",
-  ]
+    include_dirs = [
+        ".",
+    ]
 }
 
-static_library("libz") {
-  sources = [
+zlib_source = [
     "adler32.c",
     "compress.c",
     "crc32.c",
@@ -42,20 +50,23 @@ static_library("libz") {
     "zutil.h",
     "contrib/minizip/ioapi.c",
     "contrib/minizip/unzip.c",
-  ]
-  public_configs = [ ":zlib_config" ]
+    "contrib/minizip/zip.c",
+]
+
+shared_library("zlib_shared") {
+    sources = zlib_source
+
+    public_configs = [
+        ":zlib_config",
+    ]
+    output_name = "zlib_shared"
 }
 
-static_library("libz_test") {
-  deps = [":libz"]
-}
+static_library("zlib_static") {
+    sources = zlib_source
 
-ohos_ndk_headers("zlib_header") {
-  sources = ["./zlib.h","./zconf.h"]
-  notices = ["LICENSE"]
-}
-
-ohos_ndk_library("libz_ndk") {
-  output_name = "z"
-  ndk_description_file = "./zlib.ndk.json"
+    public_configs = [
+        ":zlib_config",
+    ]
+    output_name = "z"
 }
