@@ -92,7 +92,7 @@ Note:If the text contains special characters, please escape them according to th
 				<filteritem type="filepath" name="contrib/masmx86 " desc="not used in ohos "/>
 				<filteritem type="filepath" name="contrib/dotzlib " desc="not used in ohos "/>
 				<filteritem type="filepath" name="FAQ " desc="not used in ohos "/>
-                <filteritem type="filename" name="*.pdf" desc="not used in ohos "/>
+				<filteritem type="filename" name="*.pdf" desc="not used in ohos "/>
 			</filefilter>
 		</filefilterlist>
 	</oatconfig>
