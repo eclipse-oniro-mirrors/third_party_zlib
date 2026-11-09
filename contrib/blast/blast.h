@@ -21,7 +21,6 @@
   Mark Adler    madler@alumni.caltech.edu
  */
 
-#define local static            /* for local function definitions */
 
 /*
  * blast() decompresses the PKWare Data Compression Library (DCL) compressed
