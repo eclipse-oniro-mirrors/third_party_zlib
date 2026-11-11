@@ -187,7 +187,6 @@ do      MEMBER="${LIBIFSNAME}/DOCS.FILE/`db2_name \"${TEXT}\"`.MBR"
         then    CMD="CPY OBJ('${TEXT}') TOOBJ('${MEMBER}') TOCCSID(${TGTCCSID})"
                 CMD="${CMD} DTAFMT(*TEXT) REPLACE(*YES)"
                 system "${CMD}"
-                system "CHGPFM FILE(${TARGETLIB}/DOCS) MBR(`basename ${TEXT}`) SRCTYPE(TXT)"
         fi
 done
 
@@ -222,7 +221,6 @@ do      DEST="${SRCPF}/`db2_name \"${HFILE}\"`.MBR"
                 CMD="CPY OBJ('`pwd`/tmphdrfile') TOOBJ('${DEST}')"
                 CMD="${CMD} TOCCSID(${TGTCCSID}) DTAFMT(*TEXT) REPLACE(*YES)"
                 system "${CMD}"
-                system "CHGPFM FILE(${TARGETLIB}/H) MBR(`basename ${HFILE} .h`) SRCTYPE(H)"
                 # touch -r "${HFILE}" "${DEST}"
                 rm -f tmphdrfile
         fi
@@ -239,28 +237,14 @@ done
 #       Install the ILE/RPG header file.
 
 
-HFILE="${SCRIPTDIR}/zlibfixed.rpgle"
-MBR="ZLIBFIXED"
-DEST="${SRCPF}/${MBR}.MBR"
+HFILE="${SCRIPTDIR}/zlib.inc"
+DEST="${SRCPF}/ZLIB.INC.MBR"
 
 if action_needed "${DEST}" "${HFILE}"
 then    CMD="CPY OBJ('${HFILE}') TOOBJ('${DEST}')"
         CMD="${CMD} TOCCSID(${TGTCCSID}) DTAFMT(*TEXT) REPLACE(*YES)"
         system "${CMD}"
         # touch -r "${HFILE}" "${DEST}"
-        system "CHGPFM FILE(${TARGETLIB}/H) MBR(${MBR}) SRCTYPE(RPGLE)"
-fi
-
-HFILE="${SCRIPTDIR}/zlibfree.rpgle"
-MBR="ZLIBFREE"
-DEST="${SRCPF}/${MBR}.MBR"
-
-if action_needed "${DEST}" "${HFILE}"
-then    CMD="CPY OBJ('${HFILE}') TOOBJ('${DEST}')"
-        CMD="${CMD} TOCCSID(${TGTCCSID}) DTAFMT(*TEXT) REPLACE(*YES)"
-        system "${CMD}"
-        # touch -r "${HFILE}" "${DEST}"
-        system "CHGPFM FILE(${TARGETLIB}/H) MBR(${MBR}) SRCTYPE(RPGLE)"
 fi
 
 IFSFILE="${IFSDIR}/include/`basename \"${HFILE}\"`"
@@ -276,7 +260,7 @@ fi
 echo '#pragma comment(user, "ZLIB version '"${VERSION}"'")' > os400.c
 echo '#pragma comment(user, __DATE__)' >> os400.c
 echo '#pragma comment(user, __TIME__)' >> os400.c
-echo '#pragma comment(copyright, "Copyright (C) 1995-2026 Jean-Loup Gailly, Mark Adler. OS/400 version by P. Monnerat.")' >> os400.c
+echo '#pragma comment(copyright, "Copyright (C) 1995-2017 Jean-Loup Gailly, Mark Adler. OS/400 version by P. Monnerat.")' >> os400.c
 make_module     OS400           os400.c
 LINK=                           # No need to rebuild service program yet.
 MODULES=
@@ -327,11 +311,10 @@ fi
 
 DEST="${LIBIFSNAME}/TOOLS.FILE/BNDSRC.MBR"
 
-if action_needed "${DEST}" "${SCRIPTDIR}/bndsrc"
+if action_needed "${SCRIPTDIR}/bndsrc" "${DEST}"
 then    CMD="CPY OBJ('${SCRIPTDIR}/bndsrc') TOOBJ('${DEST}')"
         CMD="${CMD} TOCCSID(${TGTCCSID}) DTAFMT(*TEXT) REPLACE(*YES)"
         system "${CMD}"
-        system "CHGPFM FILE(${TARGETLIB}/TOOLS) MBR(BNDSRC) SRCTYPE(BND)"
         # touch -r "${SCRIPTDIR}/bndsrc" "${DEST}"
         LINK=YES
 fi
@@ -378,6 +361,6 @@ then    rm -rf "${LIBIFSNAME}/${DYNBNDDIR}.BNDDIR"
         CMD="${CMD} TEXT('ZLIB dynamic binding directory')"
         system "${CMD}"
         CMD="ADDBNDDIRE BNDDIR(${TARGETLIB}/${DYNBNDDIR})"
-        CMD="${CMD} OBJ((${TARGETLIB}/${SRVPGM} *SRVPGM))"
+        CMD="${CMD} OBJ((*LIBL/${SRVPGM} *SRVPGM))"
         system "${CMD}"
 fi

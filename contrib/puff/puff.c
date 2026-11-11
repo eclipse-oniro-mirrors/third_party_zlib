@@ -25,7 +25,7 @@
  * code is meant to supplement RFC 1951, which formally describes the deflate
  * format:
  *
- *    https://datatracker.ietf.org/doc/html/rfc1951
+ *    http://www.zlib.org/rfc-deflate.html
  */
 
 /*

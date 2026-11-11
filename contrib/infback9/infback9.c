@@ -47,7 +47,8 @@ int ZEXPORT inflateBack9Init_(z_stream FAR *strm, unsigned char FAR *window,
 #ifdef MAKEFIXED
 #include <stdio.h>
 
-void makefixed9(void) {
+void makefixed9(void) 
+{
     unsigned sym, bits, low, size;
     code *next, *lenfix, *distfix;
     struct inflate_state state;
@@ -293,7 +294,7 @@ int ZEXPORT inflateBack9(z_stream FAR *strm, in_func in, void FAR *in_desc,
                 mode = TABLE;
                 break;
             case 3:
-                strm->msg = (z_const char *)"invalid block type";
+                strm->msg = (char *)"invalid block type";
                 mode = BAD;
             }
             DROPBITS(2);
@@ -304,7 +305,7 @@ int ZEXPORT inflateBack9(z_stream FAR *strm, in_func in, void FAR *in_desc,
             BYTEBITS();                         /* go to byte boundary */
             NEEDBITS(32);
             if ((hold & 0xffff) != ((hold >> 16) ^ 0xffff)) {
-                strm->msg = (z_const char *)"invalid stored block lengths";
+                strm->msg = (char *)"invalid stored block lengths";
                 mode = BAD;
                 break;
             }
@@ -341,7 +342,7 @@ int ZEXPORT inflateBack9(z_stream FAR *strm, in_func in, void FAR *in_desc,
             state->ncode = BITS(4) + 4;
             DROPBITS(4);
             if (state->nlen > 286) {
-                strm->msg = (z_const char *)"too many length symbols";
+                strm->msg = (char *)"too many length symbols";
                 mode = BAD;
                 break;
             }
@@ -362,7 +363,7 @@ int ZEXPORT inflateBack9(z_stream FAR *strm, in_func in, void FAR *in_desc,
             ret = inflate_table9(CODES, state->lens, 19, &(state->next),
                                 &(lenbits), state->work);
             if (ret) {
-                strm->msg = (z_const char *)"invalid code lengths set";
+                strm->msg = (char *)"invalid code lengths set";
                 mode = BAD;
                 break;
             }
@@ -386,7 +387,7 @@ int ZEXPORT inflateBack9(z_stream FAR *strm, in_func in, void FAR *in_desc,
                         NEEDBITS(here.bits + 2);
                         DROPBITS(here.bits);
                         if (state->have == 0) {
-                            strm->msg = (z_const char *)"invalid bit length repeat";
+                            strm->msg = (char *)"invalid bit length repeat";
                             mode = BAD;
                             break;
                         }
@@ -409,7 +410,7 @@ int ZEXPORT inflateBack9(z_stream FAR *strm, in_func in, void FAR *in_desc,
                         DROPBITS(7);
                     }
                     if (state->have + copy > state->nlen + state->ndist) {
-                        strm->msg = (z_const char *)"invalid bit length repeat";
+                        strm->msg = (char *)"invalid bit length repeat";
                         mode = BAD;
                         break;
                     }
@@ -423,7 +424,7 @@ int ZEXPORT inflateBack9(z_stream FAR *strm, in_func in, void FAR *in_desc,
 
             /* check for end-of-block code (better have one) */
             if (state->lens[256] == 0) {
-                strm->msg = (z_const char *)"invalid code -- missing end-of-block";
+                strm->msg = (char *)"invalid code -- missing end-of-block";
                 mode = BAD;
                 break;
             }
@@ -437,7 +438,7 @@ int ZEXPORT inflateBack9(z_stream FAR *strm, in_func in, void FAR *in_desc,
             ret = inflate_table9(LENS, state->lens, state->nlen,
                             &(state->next), &(lenbits), state->work);
             if (ret) {
-                strm->msg = (z_const char *)"invalid literal/lengths set";
+                strm->msg = (char *)"invalid literal/lengths set";
                 mode = BAD;
                 break;
             }
@@ -447,7 +448,7 @@ int ZEXPORT inflateBack9(z_stream FAR *strm, in_func in, void FAR *in_desc,
                             state->ndist, &(state->next), &(distbits),
                             state->work);
             if (ret) {
-                strm->msg = (z_const char *)"invalid distances set";
+                strm->msg = (char *)"invalid distances set";
                 mode = BAD;
                 break;
             }
@@ -495,7 +496,7 @@ int ZEXPORT inflateBack9(z_stream FAR *strm, in_func in, void FAR *in_desc,
 
             /* invalid code */
             if (here.op & 64) {
-                strm->msg = (z_const char *)"invalid literal/length code";
+                strm->msg = (char *)"invalid literal/length code";
                 mode = BAD;
                 break;
             }
@@ -527,7 +528,7 @@ int ZEXPORT inflateBack9(z_stream FAR *strm, in_func in, void FAR *in_desc,
             }
             DROPBITS(here.bits);
             if (here.op & 64) {
-                strm->msg = (z_const char *)"invalid distance code";
+                strm->msg = (char *)"invalid distance code";
                 mode = BAD;
                 break;
             }
@@ -541,7 +542,7 @@ int ZEXPORT inflateBack9(z_stream FAR *strm, in_func in, void FAR *in_desc,
                 DROPBITS(extra);
             }
             if (offset > WSIZE - (wrap ? 0: left)) {
-                strm->msg = (z_const char *)"invalid distance too far back";
+                strm->msg = (char *)"invalid distance too far back";
                 mode = BAD;
                 break;
             }

@@ -1,10 +1,11 @@
 /* zip.h -- IO on .zip files using zlib
-   part of the MiniZip project - ( https://www.winimage.com/zLibDll/minizip.html )
+   Version 1.1, February 14h, 2010
+   part of the MiniZip project - ( http://www.winimage.com/zLibDll/minizip.html )
 
-         Copyright (C) 1998-2026 Gilles Vollant (minizip) ( https://www.winimage.com/zLibDll/minizip.html )
+         Copyright (C) 1998-2010 Gilles Vollant (minizip) ( http://www.winimage.com/zLibDll/minizip.html )
 
          Modifications for Zip64 support
-         Copyright (C) 2009-2010 Mathias Svensson ( https://result42.com )
+         Copyright (C) 2009-2010 Mathias Svensson ( http://result42.com )
 
          For more info read MiniZip_info.txt
 
@@ -34,7 +35,7 @@
 
         See header of zip.h
 
- */
+*/
 
 #ifndef _zip12_H
 #define _zip12_H
@@ -43,7 +44,7 @@
 extern "C" {
 #endif
 
-/* #define HAVE_BZIP2 */
+//#define HAVE_BZIP2
 
 #ifndef _ZLIB_H
 #include "zlib.h"
@@ -67,8 +68,6 @@ typedef zipFile__ *zipFile;
 #else
 typedef voidp zipFile;
 #endif
-
-extern const char zip_copyright[];
 
 #define ZIP_OK                          (0)
 #define ZIP_EOF                         (0)
@@ -128,12 +127,12 @@ extern zipFile ZEXPORT zipOpen64(const void *pathname, int append);
      If the zipfile cannot be opened, the return value is NULL.
      Else, the return value is a zipFile Handle, usable with other function
        of this zip package.
- */
+*/
 
 /* Note : there is no delete function into a zipfile.
    If you want delete file into a zipfile, you must open a zipfile, and create another
    Of course, you can use RAW reading and writing to copy the file you did not want delete
- */
+*/
 
 extern zipFile ZEXPORT zipOpen2(const char *pathname,
                                 int append,
@@ -187,7 +186,7 @@ extern int ZEXPORT zipOpenNewFileInZip64(zipFile file,
   zip64 is set to 1 if a zip64 extended information block should be added to the local file header.
                     this MUST be '1' if the uncompressed size is >= 0xffffffff.
 
- */
+*/
 
 
 extern int ZEXPORT zipOpenNewFileInZip2(zipFile file,
@@ -312,12 +311,12 @@ extern int ZEXPORT zipWriteInFileInZip(zipFile file,
                                        unsigned len);
 /*
   Write data in the zipfile
- */
+*/
 
 extern int ZEXPORT zipCloseFileInZip(zipFile file);
 /*
   Close the current file in the zipfile
- */
+*/
 
 extern int ZEXPORT zipCloseFileInZipRaw(zipFile file,
                                         uLong uncompressed_size,
@@ -327,23 +326,17 @@ extern int ZEXPORT zipCloseFileInZipRaw64(zipFile file,
                                           ZPOS64_T uncompressed_size,
                                           uLong crc32);
 
-extern int ZEXPORT zipAlreadyThere(zipFile file,
-                                   char const* name);
-/*
-  See if name is already in file's central directory.
- */
-
 /*
   Close the current file in the zipfile, for file opened with
     parameter raw=1 in zipOpenNewFileInZip2
   uncompressed_size and crc32 are value for the uncompressed size
- */
+*/
 
 extern int ZEXPORT zipClose(zipFile file,
                             const char* global_comment);
 /*
   Close the zipfile
- */
+*/
 
 
 extern int ZEXPORT zipRemoveExtraInfoBlock(char* pData, int* dataLen, short sHeader);
@@ -362,7 +355,7 @@ extern int ZEXPORT zipRemoveExtraInfoBlock(char* pData, int* dataLen, short sHea
 
                         Remove ZIP64 Extra information from a Local File Header extra field data
         zipRemoveExtraInfoBlock(pLocalHeaderExtraFieldData, &nLocalHeaderExtraFieldDataLen, 0x0001);
- */
+*/
 
 #ifdef __cplusplus
 }
